@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.sports.mapper.SportsNewsMapper">
+    
+    <resultMap type="SportsNews" id="SportsNewsResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="content"    column="content"    />
+        <result property="views"    column="views"    />
+        <result property="file"    column="file"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectSportsNewsVo">
+        select id, title, content, views, file, create_by, create_time, update_by, update_time from sports_news
+    </sql>
+
+    <select id="selectSportsNewsList" parameterType="SportsNews" resultMap="SportsNewsResult">
+        <include refid="selectSportsNewsVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="views != null "> and views = #{views}</if>
+            <if test="file != null  and file != ''"> and file = #{file}</if>
+        </where>
+    </select>
+    
+    <select id="selectSportsNewsById" parameterType="Long" resultMap="SportsNewsResult">
+        <include refid="selectSportsNewsVo"/>
+        where sports_news.id = #{id}
+    </select>
+        
+    <insert id="insertSportsNews" parameterType="SportsNews" useGeneratedKeys="true" keyProperty="id">
+        insert into sports_news
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">title,</if>
+            <if test="content != null">content,</if>
+            <if test="views != null">views,</if>
+            <if test="file != null">file,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null">#{title},</if>
+            <if test="content != null">#{content},</if>
+            <if test="views != null">#{views},</if>
+            <if test="file != null">#{file},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSportsNews" parameterType="SportsNews">
+        update sports_news
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="views != null">views = #{views},</if>
+            <if test="file != null">file = #{file},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where sports_news.id = #{id}
+    </update>
+
+    <delete id="deleteSportsNewsById" parameterType="Long">
+        delete from sports_news where id = #{id}
+    </delete>
+
+    <delete id="deleteSportsNewsByIds" parameterType="String">
+        delete from sports_news where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

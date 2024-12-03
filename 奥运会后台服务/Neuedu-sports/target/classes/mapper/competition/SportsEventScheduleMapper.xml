@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.sports.mapper.SportsEventScheduleMapper">
+    
+    <resultMap type="SportsEventSchedule" id="SportsEventScheduleResult">
+        <result property="id"    column="id"    />
+        <result property="eventName"    column="event_name"    />
+        <result property="eventDate"    column="event_date"    />
+        <result property="eventTime"    column="event_time"    />
+        <result property="eventLocation"    column="event_location"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectSportsEventScheduleVo">
+        select id, event_name, event_date, event_time, event_location, create_by, create_time, update_by, update_time, remark from sports_event_schedule
+    </sql>
+
+    <select id="selectSportsEventScheduleList" parameterType="SportsEventSchedule" resultMap="SportsEventScheduleResult">
+        <include refid="selectSportsEventScheduleVo"/>
+        <where>  
+            <if test="eventName != null  and eventName != ''"> and event_name like concat('%', #{eventName}, '%')</if>
+            <if test="eventDate != null "> and event_date = #{eventDate}</if>
+            <if test="eventTime != null "> and event_time = #{eventTime}</if>
+            <if test="eventLocation != null  and eventLocation != ''"> and event_location = #{eventLocation}</if>
+        </where>
+    </select>
+    
+    <select id="selectSportsEventScheduleById" parameterType="Long" resultMap="SportsEventScheduleResult">
+        <include refid="selectSportsEventScheduleVo"/>
+        where sports_event_schedule.id = #{id}
+    </select>
+        
+    <insert id="insertSportsEventSchedule" parameterType="SportsEventSchedule" useGeneratedKeys="true" keyProperty="id">
+        insert into sports_event_schedule
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="eventName != null">event_name,</if>
+            <if test="eventDate != null">event_date,</if>
+            <if test="eventTime != null">event_time,</if>
+            <if test="eventLocation != null">event_location,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="eventName != null">#{eventName},</if>
+            <if test="eventDate != null">#{eventDate},</if>
+            <if test="eventTime != null">#{eventTime},</if>
+            <if test="eventLocation != null">#{eventLocation},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSportsEventSchedule" parameterType="SportsEventSchedule">
+        update sports_event_schedule
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="eventName != null">event_name = #{eventName},</if>
+            <if test="eventDate != null">event_date = #{eventDate},</if>
+            <if test="eventTime != null">event_time = #{eventTime},</if>
+            <if test="eventLocation != null">event_location = #{eventLocation},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where sports_event_schedule.id = #{id}
+    </update>
+
+    <delete id="deleteSportsEventScheduleById" parameterType="Long">
+        delete from sports_event_schedule where id = #{id}
+    </delete>
+
+    <delete id="deleteSportsEventScheduleByIds" parameterType="String">
+        delete from sports_event_schedule where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="Neuedu-online" />
+        <module name="neuedu-quartz" />
+        <module name="neuedu-admin" />
+        <module name="neuedu-generator" />
+        <module name="neuedu-framework" />
+        <module name="neuedu-system" />
+        <module name="neuedu-common" />
+        <module name="Neuedu-sports" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.sports.mapper.SportsCustomerSupportMapper">
+    
+    <resultMap type="SportsCustomerSupport" id="SportsCustomerSupportResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="customerName"    column="customer_name"    />
+        <result property="contactInfo"    column="contact_info"    />
+        <result property="inquiryDetails"    column="inquiry_details"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectSportsCustomerSupportVo">
+        select id, create_by, create_time, update_by, update_time, remark, customer_name, contact_info, inquiry_details, status from sports_customer_support
+    </sql>
+
+    <select id="selectSportsCustomerSupportList" parameterType="SportsCustomerSupport" resultMap="SportsCustomerSupportResult">
+        <include refid="selectSportsCustomerSupportVo"/>
+        <where>  
+            <if test="customerName != null  and customerName != ''"> and customer_name like concat('%', #{customerName}, '%')</if>
+            <if test="contactInfo != null  and contactInfo != ''"> and contact_info = #{contactInfo}</if>
+            <if test="inquiryDetails != null  and inquiryDetails != ''"> and inquiry_details = #{inquiryDetails}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectSportsCustomerSupportById" parameterType="Long" resultMap="SportsCustomerSupportResult">
+        <include refid="selectSportsCustomerSupportVo"/>
+        where sports_customer_support.id = #{id}
+    </select>
+        
+    <insert id="insertSportsCustomerSupport" parameterType="SportsCustomerSupport" useGeneratedKeys="true" keyProperty="id">
+        insert into sports_customer_support
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="customerName != null">customer_name,</if>
+            <if test="contactInfo != null">contact_info,</if>
+            <if test="inquiryDetails != null">inquiry_details,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="customerName != null">#{customerName},</if>
+            <if test="contactInfo != null">#{contactInfo},</if>
+            <if test="inquiryDetails != null">#{inquiryDetails},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSportsCustomerSupport" parameterType="SportsCustomerSupport">
+        update sports_customer_support
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="customerName != null">customer_name = #{customerName},</if>
+            <if test="contactInfo != null">contact_info = #{contactInfo},</if>
+            <if test="inquiryDetails != null">inquiry_details = #{inquiryDetails},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where sports_customer_support.id = #{id}
+    </update>
+
+    <delete id="deleteSportsCustomerSupportById" parameterType="Long">
+        delete from sports_customer_support where id = #{id}
+    </delete>
+
+    <delete id="deleteSportsCustomerSupportByIds" parameterType="String">
+        delete from sports_customer_support where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

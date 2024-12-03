@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.health.mapper.SportsHealthMonitoringMapper">
+    
+    <resultMap type="SportsHealthMonitoring" id="SportsHealthMonitoringResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="personType"    column="person_type"    />
+        <result property="monitoringDetails"    column="monitoring_details"    />
+        <result property="medicalSupportInfo"    column="medical_support_info"    />
+    </resultMap>
+
+    <sql id="selectSportsHealthMonitoringVo">
+        select id, create_by, create_time, update_by, update_time, remark, person_type, monitoring_details, medical_support_info from sports_health_monitoring
+    </sql>
+
+    <select id="selectSportsHealthMonitoringList" parameterType="SportsHealthMonitoring" resultMap="SportsHealthMonitoringResult">
+        <include refid="selectSportsHealthMonitoringVo"/>
+        <where>  
+            <if test="personType != null  and personType != ''"> and person_type = #{personType}</if>
+        </where>
+    </select>
+    
+    <select id="selectSportsHealthMonitoringById" parameterType="Long" resultMap="SportsHealthMonitoringResult">
+        <include refid="selectSportsHealthMonitoringVo"/>
+        where sports_health_monitoring.id = #{id}
+    </select>
+        
+    <insert id="insertSportsHealthMonitoring" parameterType="SportsHealthMonitoring" useGeneratedKeys="true" keyProperty="id">
+        insert into sports_health_monitoring
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="personType != null">person_type,</if>
+            <if test="monitoringDetails != null">monitoring_details,</if>
+            <if test="medicalSupportInfo != null">medical_support_info,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="personType != null">#{personType},</if>
+            <if test="monitoringDetails != null">#{monitoringDetails},</if>
+            <if test="medicalSupportInfo != null">#{medicalSupportInfo},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSportsHealthMonitoring" parameterType="SportsHealthMonitoring">
+        update sports_health_monitoring
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="personType != null">person_type = #{personType},</if>
+            <if test="monitoringDetails != null">monitoring_details = #{monitoringDetails},</if>
+            <if test="medicalSupportInfo != null">medical_support_info = #{medicalSupportInfo},</if>
+        </trim>
+        where sports_health_monitoring.id = #{id}
+    </update>
+
+    <delete id="deleteSportsHealthMonitoringById" parameterType="Long">
+        delete from sports_health_monitoring where id = #{id}
+    </delete>
+
+    <delete id="deleteSportsHealthMonitoringByIds" parameterType="String">
+        delete from sports_health_monitoring where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

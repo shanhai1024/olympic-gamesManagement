@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.sports.mapper.SportsTicketSalesMapper">
+    
+    <resultMap type="SportsTicketSales" id="SportsTicketSalesResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="eventId"    column="event_id"    />
+        <result property="ticketCategory"    column="ticket_category"    />
+        <result property="ticketPrice"    column="ticket_price"    />
+        <result property="totalQuantity"    column="total_quantity"    />
+        <result property="soldQuantity"    column="sold_quantity"    />
+    </resultMap>
+
+    <sql id="selectSportsTicketSalesVo">
+        select id, create_by, create_time, update_by, update_time, remark, event_id, ticket_category, ticket_price, total_quantity, sold_quantity from sports_ticket_sales
+    </sql>
+
+    <select id="selectSportsTicketSalesList" parameterType="SportsTicketSales" resultMap="SportsTicketSalesResult">
+        <include refid="selectSportsTicketSalesVo"/>
+        <where>  
+            <if test="eventId != null "> and event_id = #{eventId}</if>
+            <if test="ticketCategory != null  and ticketCategory != ''"> and ticket_category = #{ticketCategory}</if>
+            <if test="ticketPrice != null "> and ticket_price = #{ticketPrice}</if>
+            <if test="totalQuantity != null "> and total_quantity = #{totalQuantity}</if>
+            <if test="soldQuantity != null "> and sold_quantity = #{soldQuantity}</if>
+        </where>
+    </select>
+    
+    <select id="selectSportsTicketSalesById" parameterType="Long" resultMap="SportsTicketSalesResult">
+        <include refid="selectSportsTicketSalesVo"/>
+        where sports_ticket_sales.id = #{id}
+    </select>
+        
+    <insert id="insertSportsTicketSales" parameterType="SportsTicketSales" useGeneratedKeys="true" keyProperty="id">
+        insert into sports_ticket_sales
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="eventId != null">event_id,</if>
+            <if test="ticketCategory != null">ticket_category,</if>
+            <if test="ticketPrice != null">ticket_price,</if>
+            <if test="totalQuantity != null">total_quantity,</if>
+            <if test="soldQuantity != null">sold_quantity,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="eventId != null">#{eventId},</if>
+            <if test="ticketCategory != null">#{ticketCategory},</if>
+            <if test="ticketPrice != null">#{ticketPrice},</if>
+            <if test="totalQuantity != null">#{totalQuantity},</if>
+            <if test="soldQuantity != null">#{soldQuantity},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSportsTicketSales" parameterType="SportsTicketSales">
+        update sports_ticket_sales
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="eventId != null">event_id = #{eventId},</if>
+            <if test="ticketCategory != null">ticket_category = #{ticketCategory},</if>
+            <if test="ticketPrice != null">ticket_price = #{ticketPrice},</if>
+            <if test="totalQuantity != null">total_quantity = #{totalQuantity},</if>
+            <if test="soldQuantity != null">sold_quantity = #{soldQuantity},</if>
+        </trim>
+        where sports_ticket_sales.id = #{id}
+    </update>
+
+    <delete id="deleteSportsTicketSalesById" parameterType="Long">
+        delete from sports_ticket_sales where id = #{id}
+    </delete>
+
+    <delete id="deleteSportsTicketSalesByIds" parameterType="String">
+        delete from sports_ticket_sales where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.sports.mapper.SportsAthletePersonalInfoMapper">
+    
+    <resultMap type="SportsAthletePersonalInfo" id="SportsAthletePersonalInfoResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="athleteName"    column="athlete_name"    />
+        <result property="athleteGender"    column="athlete_gender"    />
+        <result property="athleteAge"    column="athlete_age"    />
+        <result property="athleteHeight"    column="athlete_height"    />
+        <result property="athleteWeight"    column="athlete_weight"    />
+        <result property="athleteNationality"    column="athlete_nationality"    />
+        <result property="performanceHistory"    column="performance_history"    />
+        <result property="healthStatus"    column="health_status"    />
+    </resultMap>
+
+    <sql id="selectSportsAthletePersonalInfoVo">
+        select id, create_by, create_time, update_by, update_time, remark, athlete_name, athlete_gender, athlete_age, athlete_height, athlete_weight, athlete_nationality, performance_history, health_status from sports_athlete_personal_info
+    </sql>
+
+    <select id="selectSportsAthletePersonalInfoList" parameterType="SportsAthletePersonalInfo" resultMap="SportsAthletePersonalInfoResult">
+        <include refid="selectSportsAthletePersonalInfoVo"/>
+        <where>  
+            <if test="athleteName != null  and athleteName != ''"> and athlete_name like concat('%', #{athleteName}, '%')</if>
+            <if test="athleteGender != null  and athleteGender != ''"> and athlete_gender = #{athleteGender}</if>
+            <if test="athleteAge != null "> and athlete_age = #{athleteAge}</if>
+            <if test="athleteHeight != null "> and athlete_height = #{athleteHeight}</if>
+            <if test="athleteWeight != null "> and athlete_weight = #{athleteWeight}</if>
+            <if test="athleteNationality != null  and athleteNationality != ''"> and athlete_nationality = #{athleteNationality}</if>
+            <if test="performanceHistory != null  and performanceHistory != ''"> and performance_history = #{performanceHistory}</if>
+            <if test="healthStatus != null  and healthStatus != ''"> and health_status = #{healthStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectSportsAthletePersonalInfoById" parameterType="Long" resultMap="SportsAthletePersonalInfoResult">
+        <include refid="selectSportsAthletePersonalInfoVo"/>
+        where sports_athlete_personal_info.id = #{id}
+    </select>
+        
+    <insert id="insertSportsAthletePersonalInfo" parameterType="SportsAthletePersonalInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into sports_athlete_personal_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="athleteName != null">athlete_name,</if>
+            <if test="athleteGender != null">athlete_gender,</if>
+            <if test="athleteAge != null">athlete_age,</if>
+            <if test="athleteHeight != null">athlete_height,</if>
+            <if test="athleteWeight != null">athlete_weight,</if>
+            <if test="athleteNationality != null">athlete_nationality,</if>
+            <if test="performanceHistory != null">performance_history,</if>
+            <if test="healthStatus != null">health_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="athleteName != null">#{athleteName},</if>
+            <if test="athleteGender != null">#{athleteGender},</if>
+            <if test="athleteAge != null">#{athleteAge},</if>
+            <if test="athleteHeight != null">#{athleteHeight},</if>
+            <if test="athleteWeight != null">#{athleteWeight},</if>
+            <if test="athleteNationality != null">#{athleteNationality},</if>
+            <if test="performanceHistory != null">#{performanceHistory},</if>
+            <if test="healthStatus != null">#{healthStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSportsAthletePersonalInfo" parameterType="SportsAthletePersonalInfo">
+        update sports_athlete_personal_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="athleteName != null">athlete_name = #{athleteName},</if>
+            <if test="athleteGender != null">athlete_gender = #{athleteGender},</if>
+            <if test="athleteAge != null">athlete_age = #{athleteAge},</if>
+            <if test="athleteHeight != null">athlete_height = #{athleteHeight},</if>
+            <if test="athleteWeight != null">athlete_weight = #{athleteWeight},</if>
+            <if test="athleteNationality != null">athlete_nationality = #{athleteNationality},</if>
+            <if test="performanceHistory != null">performance_history = #{performanceHistory},</if>
+            <if test="healthStatus != null">health_status = #{healthStatus},</if>
+        </trim>
+        where sports_athlete_personal_info.id = #{id}
+    </update>
+
+    <delete id="deleteSportsAthletePersonalInfoById" parameterType="Long">
+        delete from sports_athlete_personal_info where id = #{id}
+    </delete>
+
+    <delete id="deleteSportsAthletePersonalInfoByIds" parameterType="String">
+        delete from sports_athlete_personal_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

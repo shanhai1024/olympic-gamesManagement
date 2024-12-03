@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.sports.mapper.SportsVolunteerActivityAssignmentMapper">
+    
+    <resultMap type="SportsVolunteerActivityAssignment" id="SportsVolunteerActivityAssignmentResult">
+        <result property="zho"    column="zho"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="volunteerId"    column="volunteer_id"    />
+        <result property="eventId"    column="event_id"    />
+        <result property="assignmentDetail"    column="assignment_detail"    />
+    </resultMap>
+
+    <sql id="selectSportsVolunteerActivityAssignmentVo">
+        select zho, create_by, create_time, update_by, update_time, remark, volunteer_id, event_id, assignment_detail from sports_volunteer_activity_assignment
+    </sql>
+
+    <select id="selectSportsVolunteerActivityAssignmentList" parameterType="SportsVolunteerActivityAssignment" resultMap="SportsVolunteerActivityAssignmentResult">
+        <include refid="selectSportsVolunteerActivityAssignmentVo"/>
+        <where>  
+            <if test="volunteerId != null "> and volunteer_id = #{volunteerId}</if>
+            <if test="eventId != null "> and event_id = #{eventId}</if>
+            <if test="assignmentDetail != null  and assignmentDetail != ''"> and assignment_detail = #{assignmentDetail}</if>
+        </where>
+    </select>
+    
+    <select id="selectSportsVolunteerActivityAssignmentByZho" parameterType="Long" resultMap="SportsVolunteerActivityAssignmentResult">
+        <include refid="selectSportsVolunteerActivityAssignmentVo"/>
+        where sports_volunteer_activity_assignment.zho = #{zho}
+    </select>
+        
+    <insert id="insertSportsVolunteerActivityAssignment" parameterType="SportsVolunteerActivityAssignment" useGeneratedKeys="true" keyProperty="zho">
+        insert into sports_volunteer_activity_assignment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="volunteerId != null">volunteer_id,</if>
+            <if test="eventId != null">event_id,</if>
+            <if test="assignmentDetail != null">assignment_detail,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="volunteerId != null">#{volunteerId},</if>
+            <if test="eventId != null">#{eventId},</if>
+            <if test="assignmentDetail != null">#{assignmentDetail},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSportsVolunteerActivityAssignment" parameterType="SportsVolunteerActivityAssignment">
+        update sports_volunteer_activity_assignment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="volunteerId != null">volunteer_id = #{volunteerId},</if>
+            <if test="eventId != null">event_id = #{eventId},</if>
+            <if test="assignmentDetail != null">assignment_detail = #{assignmentDetail},</if>
+        </trim>
+        where sports_volunteer_activity_assignment.zho = #{zho}
+    </update>
+
+    <delete id="deleteSportsVolunteerActivityAssignmentByZho" parameterType="Long">
+        delete from sports_volunteer_activity_assignment where zho = #{zho}
+    </delete>
+
+    <delete id="deleteSportsVolunteerActivityAssignmentByZhos" parameterType="String">
+        delete from sports_volunteer_activity_assignment where zho in 
+        <foreach item="zho" collection="array" open="(" separator="," close=")">
+            #{zho}
+        </foreach>
+    </delete>
+</mapper>

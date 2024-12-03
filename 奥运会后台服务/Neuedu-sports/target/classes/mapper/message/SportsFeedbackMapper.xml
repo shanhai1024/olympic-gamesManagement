@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.sports.mapper.SportsFeedbackMapper">
+    
+    <resultMap type="SportsFeedback" id="SportsFeedbackResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="title"    column="title"    />
+        <result property="status"    column="status"    />
+        <result property="content"    column="content"    />
+        <result property="contacts"    column="contacts"    />
+        <result property="contactPhone"    column="contact_phone"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectSportsFeedbackVo">
+        select id, user_id, title, status, content, contacts, contact_phone, create_by, create_time, update_by, update_time from sports_feedback
+    </sql>
+
+    <select id="selectSportsFeedbackList" parameterType="SportsFeedback" resultMap="SportsFeedbackResult">
+        <include refid="selectSportsFeedbackVo"/>
+        <where>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="contacts != null  and contacts != ''"> and contacts = #{contacts}</if>
+            <if test="contactPhone != null  and contactPhone != ''"> and contact_phone = #{contactPhone}</if>
+        </where>
+    </select>
+    
+    <select id="selectSportsFeedbackById" parameterType="Long" resultMap="SportsFeedbackResult">
+        <include refid="selectSportsFeedbackVo"/>
+        where sports_feedback.id = #{id}
+    </select>
+        
+    <insert id="insertSportsFeedback" parameterType="SportsFeedback" useGeneratedKeys="true" keyProperty="id">
+        insert into sports_feedback
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">title,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="status != null">status,</if>
+            <if test="content != null">content,</if>
+            <if test="contacts != null">contacts,</if>
+            <if test="contactPhone != null">contact_phone,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null">#{title},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="content != null">#{content},</if>
+            <if test="contacts != null">#{contacts},</if>
+            <if test="contactPhone != null">#{contactPhone},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSportsFeedback" parameterType="SportsFeedback">
+        update sports_feedback
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null">title = #{title},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="contacts != null">contacts = #{contacts},</if>
+            <if test="contactPhone != null">contact_phone = #{contactPhone},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where sports_feedback.id = #{id}
+    </update>
+
+    <delete id="deleteSportsFeedbackById" parameterType="Long">
+        delete from sports_feedback where id = #{id}
+    </delete>
+
+    <delete id="deleteSportsFeedbackByIds" parameterType="String">
+        delete from sports_feedback where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

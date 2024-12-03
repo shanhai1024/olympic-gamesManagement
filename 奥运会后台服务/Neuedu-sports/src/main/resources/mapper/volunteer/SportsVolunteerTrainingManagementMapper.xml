@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.sports.mapper.SportsVolunteerTrainingManagementMapper">
+    
+    <resultMap type="SportsVolunteerTrainingManagement" id="SportsVolunteerTrainingManagementResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="trainingMaterial"    column="training_material"    />
+        <result property="offlineTrainingSchedule"    column="offline_training_schedule"    />
+    </resultMap>
+
+    <sql id="selectSportsVolunteerTrainingManagementVo">
+        select id, create_by, create_time, update_by, update_time, remark, training_material, offline_training_schedule from sports_volunteer_training_management
+    </sql>
+
+    <select id="selectSportsVolunteerTrainingManagementList" parameterType="SportsVolunteerTrainingManagement" resultMap="SportsVolunteerTrainingManagementResult">
+        <include refid="selectSportsVolunteerTrainingManagementVo"/>
+        <where>  
+            <if test="trainingMaterial != null  and trainingMaterial != ''"> and training_material = #{trainingMaterial}</if>
+            <if test="offlineTrainingSchedule != null  and offlineTrainingSchedule != ''"> and offline_training_schedule = #{offlineTrainingSchedule}</if>
+        </where>
+    </select>
+    
+    <select id="selectSportsVolunteerTrainingManagementById" parameterType="Long" resultMap="SportsVolunteerTrainingManagementResult">
+        <include refid="selectSportsVolunteerTrainingManagementVo"/>
+        where sports_volunteer_training_management.id = #{id}
+    </select>
+        
+    <insert id="insertSportsVolunteerTrainingManagement" parameterType="SportsVolunteerTrainingManagement" useGeneratedKeys="true" keyProperty="id">
+        insert into sports_volunteer_training_management
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="trainingMaterial != null">training_material,</if>
+            <if test="offlineTrainingSchedule != null">offline_training_schedule,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="trainingMaterial != null">#{trainingMaterial},</if>
+            <if test="offlineTrainingSchedule != null">#{offlineTrainingSchedule},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSportsVolunteerTrainingManagement" parameterType="SportsVolunteerTrainingManagement">
+        update sports_volunteer_training_management
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="trainingMaterial != null">training_material = #{trainingMaterial},</if>
+            <if test="offlineTrainingSchedule != null">offline_training_schedule = #{offlineTrainingSchedule},</if>
+        </trim>
+        where sports_volunteer_training_management.id = #{id}
+    </update>
+
+    <delete id="deleteSportsVolunteerTrainingManagementById" parameterType="Long">
+        delete from sports_volunteer_training_management where id = #{id}
+    </delete>
+
+    <delete id="deleteSportsVolunteerTrainingManagementByIds" parameterType="String">
+        delete from sports_volunteer_training_management where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

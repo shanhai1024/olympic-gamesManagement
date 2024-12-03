@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.audience.mapper.SportsAudienceGuideMapper">
+    
+    <resultMap type="SportsAudienceGuide" id="SportsAudienceGuideResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="eventId"    column="event_id"    />
+        <result property="venueMap"    column="venue_map"    />
+        <result property="transportationGuide"    column="transportation_guide"    />
+        <result property="safetyNotice"    column="safety_notice"    />
+    </resultMap>
+
+    <sql id="selectSportsAudienceGuideVo">
+        select id, create_by, create_time, update_by, update_time, remark, event_id, venue_map, transportation_guide, safety_notice from sports_audience_guide
+    </sql>
+
+    <select id="selectSportsAudienceGuideList" parameterType="SportsAudienceGuide" resultMap="SportsAudienceGuideResult">
+        <include refid="selectSportsAudienceGuideVo"/>
+        <where>  
+            <if test="eventId != null "> and event_id = #{eventId}</if>
+            <if test="venueMap != null  and venueMap != ''"> and venue_map = #{venueMap}</if>
+            <if test="transportationGuide != null  and transportationGuide != ''"> and transportation_guide = #{transportationGuide}</if>
+            <if test="safetyNotice != null  and safetyNotice != ''"> and safety_notice = #{safetyNotice}</if>
+        </where>
+    </select>
+    
+    <select id="selectSportsAudienceGuideById" parameterType="Long" resultMap="SportsAudienceGuideResult">
+        <include refid="selectSportsAudienceGuideVo"/>
+        where sports_audience_guide.id = #{id}
+    </select>
+        
+    <insert id="insertSportsAudienceGuide" parameterType="SportsAudienceGuide" useGeneratedKeys="true" keyProperty="id">
+        insert into sports_audience_guide
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="eventId != null">event_id,</if>
+            <if test="venueMap != null">venue_map,</if>
+            <if test="transportationGuide != null">transportation_guide,</if>
+            <if test="safetyNotice != null">safety_notice,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="eventId != null">#{eventId},</if>
+            <if test="venueMap != null">#{venueMap},</if>
+            <if test="transportationGuide != null">#{transportationGuide},</if>
+            <if test="safetyNotice != null">#{safetyNotice},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSportsAudienceGuide" parameterType="SportsAudienceGuide">
+        update sports_audience_guide
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="eventId != null">event_id = #{eventId},</if>
+            <if test="venueMap != null">venue_map = #{venueMap},</if>
+            <if test="transportationGuide != null">transportation_guide = #{transportationGuide},</if>
+            <if test="safetyNotice != null">safety_notice = #{safetyNotice},</if>
+        </trim>
+        where sports_audience_guide.id = #{id}
+    </update>
+
+    <delete id="deleteSportsAudienceGuideById" parameterType="Long">
+        delete from sports_audience_guide where id = #{id}
+    </delete>
+
+    <delete id="deleteSportsAudienceGuideByIds" parameterType="String">
+        delete from sports_audience_guide where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

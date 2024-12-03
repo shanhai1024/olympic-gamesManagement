@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.sports.mapper.SportsCrisisResponseMapper">
+    
+    <resultMap type="SportsCrisisResponse" id="SportsCrisisResponseResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="responseTeamInfo"    column="response_team_info"    />
+        <result property="communicationMechanism"    column="communication_mechanism"    />
+    </resultMap>
+
+    <sql id="selectSportsCrisisResponseVo">
+        select id, create_by, create_time, update_by, update_time, remark, response_team_info, communication_mechanism from sports_crisis_response
+    </sql>
+
+    <select id="selectSportsCrisisResponseList" parameterType="SportsCrisisResponse" resultMap="SportsCrisisResponseResult">
+        <include refid="selectSportsCrisisResponseVo"/>
+        <where>  
+            <if test="responseTeamInfo != null  and responseTeamInfo != ''"> and response_team_info = #{responseTeamInfo}</if>
+            <if test="communicationMechanism != null  and communicationMechanism != ''"> and communication_mechanism = #{communicationMechanism}</if>
+        </where>
+    </select>
+    
+    <select id="selectSportsCrisisResponseById" parameterType="Long" resultMap="SportsCrisisResponseResult">
+        <include refid="selectSportsCrisisResponseVo"/>
+        where sports_crisis_response.id = #{id}
+    </select>
+        
+    <insert id="insertSportsCrisisResponse" parameterType="SportsCrisisResponse" useGeneratedKeys="true" keyProperty="id">
+        insert into sports_crisis_response
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="responseTeamInfo != null">response_team_info,</if>
+            <if test="communicationMechanism != null">communication_mechanism,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="responseTeamInfo != null">#{responseTeamInfo},</if>
+            <if test="communicationMechanism != null">#{communicationMechanism},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSportsCrisisResponse" parameterType="SportsCrisisResponse">
+        update sports_crisis_response
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="responseTeamInfo != null">response_team_info = #{responseTeamInfo},</if>
+            <if test="communicationMechanism != null">communication_mechanism = #{communicationMechanism},</if>
+        </trim>
+        where sports_crisis_response.id = #{id}
+    </update>
+
+    <delete id="deleteSportsCrisisResponseById" parameterType="Long">
+        delete from sports_crisis_response where id = #{id}
+    </delete>
+
+    <delete id="deleteSportsCrisisResponseByIds" parameterType="String">
+        delete from sports_crisis_response where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

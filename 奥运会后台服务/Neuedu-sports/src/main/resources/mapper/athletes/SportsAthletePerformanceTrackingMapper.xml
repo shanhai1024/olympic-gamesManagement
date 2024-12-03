@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.sports.mapper.SportsAthletePerformanceTrackingMapper">
+    
+    <resultMap type="SportsAthletePerformanceTracking" id="SportsAthletePerformanceTrackingResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="athleteId"    column="athlete_id"    />
+        <result property="trainingPerformance"    column="training_performance"    />
+        <result property="competitionPerformance"    column="competition_performance"    />
+    </resultMap>
+
+    <sql id="selectSportsAthletePerformanceTrackingVo">
+        select id, create_by, create_time, update_by, update_time, remark, athlete_id, training_performance, competition_performance from sports_athlete_performance_tracking
+    </sql>
+
+    <select id="selectSportsAthletePerformanceTrackingList" parameterType="SportsAthletePerformanceTracking" resultMap="SportsAthletePerformanceTrackingResult">
+        <include refid="selectSportsAthletePerformanceTrackingVo"/>
+        <where>  
+            <if test="athleteId != null "> and athlete_id = #{athleteId}</if>
+            <if test="trainingPerformance != null  and trainingPerformance != ''"> and training_performance = #{trainingPerformance}</if>
+            <if test="competitionPerformance != null  and competitionPerformance != ''"> and competition_performance = #{competitionPerformance}</if>
+        </where>
+    </select>
+    
+    <select id="selectSportsAthletePerformanceTrackingById" parameterType="Long" resultMap="SportsAthletePerformanceTrackingResult">
+        <include refid="selectSportsAthletePerformanceTrackingVo"/>
+        where sports_athlete_performance_tracking.id = #{id}
+    </select>
+        
+    <insert id="insertSportsAthletePerformanceTracking" parameterType="SportsAthletePerformanceTracking" useGeneratedKeys="true" keyProperty="id">
+        insert into sports_athlete_performance_tracking
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="athleteId != null">athlete_id,</if>
+            <if test="trainingPerformance != null">training_performance,</if>
+            <if test="competitionPerformance != null">competition_performance,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="athleteId != null">#{athleteId},</if>
+            <if test="trainingPerformance != null">#{trainingPerformance},</if>
+            <if test="competitionPerformance != null">#{competitionPerformance},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSportsAthletePerformanceTracking" parameterType="SportsAthletePerformanceTracking">
+        update sports_athlete_performance_tracking
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="athleteId != null">athlete_id = #{athleteId},</if>
+            <if test="trainingPerformance != null">training_performance = #{trainingPerformance},</if>
+            <if test="competitionPerformance != null">competition_performance = #{competitionPerformance},</if>
+        </trim>
+        where sports_athlete_performance_tracking.id = #{id}
+    </update>
+
+    <delete id="deleteSportsAthletePerformanceTrackingById" parameterType="Long">
+        delete from sports_athlete_performance_tracking where id = #{id}
+    </delete>
+
+    <delete id="deleteSportsAthletePerformanceTrackingByIds" parameterType="String">
+        delete from sports_athlete_performance_tracking where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

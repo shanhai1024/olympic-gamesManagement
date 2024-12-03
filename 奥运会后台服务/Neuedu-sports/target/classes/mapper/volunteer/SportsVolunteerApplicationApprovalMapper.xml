@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.sports.mapper.SportsVolunteerApplicationApprovalMapper">
+    
+    <resultMap type="SportsVolunteerApplicationApproval" id="SportsVolunteerApplicationApprovalResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="volunteerName"    column="volunteer_name"    />
+        <result property="applicationStatus"    column="application_status"    />
+        <result property="qualificationReview"    column="qualification_review"    />
+        <result property="assignmentInfo"    column="assignment_info"    />
+    </resultMap>
+
+    <sql id="selectSportsVolunteerApplicationApprovalVo">
+        select id, create_by, create_time, update_by, update_time, remark, volunteer_name, application_status, qualification_review, assignment_info from sports_volunteer_application_approval
+    </sql>
+
+    <select id="selectSportsVolunteerApplicationApprovalList" parameterType="SportsVolunteerApplicationApproval" resultMap="SportsVolunteerApplicationApprovalResult">
+        <include refid="selectSportsVolunteerApplicationApprovalVo"/>
+        <where>  
+            <if test="volunteerName != null  and volunteerName != ''"> and volunteer_name like concat('%', #{volunteerName}, '%')</if>
+            <if test="applicationStatus != null  and applicationStatus != ''"> and application_status = #{applicationStatus}</if>
+            <if test="qualificationReview != null  and qualificationReview != ''"> and qualification_review = #{qualificationReview}</if>
+            <if test="assignmentInfo != null  and assignmentInfo != ''"> and assignment_info = #{assignmentInfo}</if>
+        </where>
+    </select>
+    
+    <select id="selectSportsVolunteerApplicationApprovalById" parameterType="Long" resultMap="SportsVolunteerApplicationApprovalResult">
+        <include refid="selectSportsVolunteerApplicationApprovalVo"/>
+        where sports_volunteer_application_approval.id = #{id}
+    </select>
+        
+    <insert id="insertSportsVolunteerApplicationApproval" parameterType="SportsVolunteerApplicationApproval" useGeneratedKeys="true" keyProperty="id">
+        insert into sports_volunteer_application_approval
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="volunteerName != null">volunteer_name,</if>
+            <if test="applicationStatus != null">application_status,</if>
+            <if test="qualificationReview != null">qualification_review,</if>
+            <if test="assignmentInfo != null">assignment_info,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="volunteerName != null">#{volunteerName},</if>
+            <if test="applicationStatus != null">#{applicationStatus},</if>
+            <if test="qualificationReview != null">#{qualificationReview},</if>
+            <if test="assignmentInfo != null">#{assignmentInfo},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSportsVolunteerApplicationApproval" parameterType="SportsVolunteerApplicationApproval">
+        update sports_volunteer_application_approval
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="volunteerName != null">volunteer_name = #{volunteerName},</if>
+            <if test="applicationStatus != null">application_status = #{applicationStatus},</if>
+            <if test="qualificationReview != null">qualification_review = #{qualificationReview},</if>
+            <if test="assignmentInfo != null">assignment_info = #{assignmentInfo},</if>
+        </trim>
+        where sports_volunteer_application_approval.id = #{id}
+    </update>
+
+    <delete id="deleteSportsVolunteerApplicationApprovalById" parameterType="Long">
+        delete from sports_volunteer_application_approval where id = #{id}
+    </delete>
+
+    <delete id="deleteSportsVolunteerApplicationApprovalByIds" parameterType="String">
+        delete from sports_volunteer_application_approval where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

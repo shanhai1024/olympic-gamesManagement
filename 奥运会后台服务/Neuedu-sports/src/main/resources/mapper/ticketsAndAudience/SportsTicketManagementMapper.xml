@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.sports.mapper.SportsTicketManagementMapper">
+    
+    <resultMap type="SportsTicketManagement" id="SportsTicketManagementResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="eventId"    column="event_id"    />
+        <result property="ticketPrice"    column="ticket_price"    />
+        <result property="ticketQuantity"    column="ticket_quantity"    />
+    </resultMap>
+
+    <sql id="selectSportsTicketManagementVo">
+        select id, create_by, create_time, update_by, update_time, remark, event_id, ticket_price, ticket_quantity from sports_ticket_management
+    </sql>
+
+    <select id="selectSportsTicketManagementList" parameterType="SportsTicketManagement" resultMap="SportsTicketManagementResult">
+        <include refid="selectSportsTicketManagementVo"/>
+        <where>  
+            <if test="eventId != null "> and event_id = #{eventId}</if>
+            <if test="ticketPrice != null "> and ticket_price = #{ticketPrice}</if>
+            <if test="ticketQuantity != null "> and ticket_quantity = #{ticketQuantity}</if>
+        </where>
+    </select>
+    
+    <select id="selectSportsTicketManagementById" parameterType="Long" resultMap="SportsTicketManagementResult">
+        <include refid="selectSportsTicketManagementVo"/>
+        where sports_ticket_management.id = #{id}
+    </select>
+        
+    <insert id="insertSportsTicketManagement" parameterType="SportsTicketManagement" useGeneratedKeys="true" keyProperty="id">
+        insert into sports_ticket_management
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="eventId != null">event_id,</if>
+            <if test="ticketPrice != null">ticket_price,</if>
+            <if test="ticketQuantity != null">ticket_quantity,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="eventId != null">#{eventId},</if>
+            <if test="ticketPrice != null">#{ticketPrice},</if>
+            <if test="ticketQuantity != null">#{ticketQuantity},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSportsTicketManagement" parameterType="SportsTicketManagement">
+        update sports_ticket_management
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="eventId != null">event_id = #{eventId},</if>
+            <if test="ticketPrice != null">ticket_price = #{ticketPrice},</if>
+            <if test="ticketQuantity != null">ticket_quantity = #{ticketQuantity},</if>
+        </trim>
+        where sports_ticket_management.id = #{id}
+    </update>
+
+    <delete id="deleteSportsTicketManagementById" parameterType="Long">
+        delete from sports_ticket_management where id = #{id}
+    </delete>
+
+    <delete id="deleteSportsTicketManagementByIds" parameterType="String">
+        delete from sports_ticket_management where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

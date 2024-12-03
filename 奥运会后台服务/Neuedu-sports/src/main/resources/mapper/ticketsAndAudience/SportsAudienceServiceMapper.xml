@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.sports.mapper.SportsAudienceServiceMapper">
+    
+    <resultMap type="SportsAudienceService" id="SportsAudienceServiceResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="serviceType"    column="service_type"    />
+        <result property="serviceDescription"    column="service_description"    />
+    </resultMap>
+
+    <sql id="selectSportsAudienceServiceVo">
+        select id, create_by, create_time, update_by, update_time, remark, service_type, service_description from sports_audience_service
+    </sql>
+
+    <select id="selectSportsAudienceServiceList" parameterType="SportsAudienceService" resultMap="SportsAudienceServiceResult">
+        <include refid="selectSportsAudienceServiceVo"/>
+        <where>  
+            <if test="serviceType != null  and serviceType != ''"> and service_type = #{serviceType}</if>
+            <if test="serviceDescription != null  and serviceDescription != ''"> and service_description = #{serviceDescription}</if>
+        </where>
+    </select>
+    
+    <select id="selectSportsAudienceServiceById" parameterType="Long" resultMap="SportsAudienceServiceResult">
+        <include refid="selectSportsAudienceServiceVo"/>
+        where sports_audience_service.id = #{id}
+    </select>
+        
+    <insert id="insertSportsAudienceService" parameterType="SportsAudienceService" useGeneratedKeys="true" keyProperty="id">
+        insert into sports_audience_service
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="serviceType != null">service_type,</if>
+            <if test="serviceDescription != null">service_description,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="serviceType != null">#{serviceType},</if>
+            <if test="serviceDescription != null">#{serviceDescription},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSportsAudienceService" parameterType="SportsAudienceService">
+        update sports_audience_service
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="serviceType != null">service_type = #{serviceType},</if>
+            <if test="serviceDescription != null">service_description = #{serviceDescription},</if>
+        </trim>
+        where sports_audience_service.id = #{id}
+    </update>
+
+    <delete id="deleteSportsAudienceServiceById" parameterType="Long">
+        delete from sports_audience_service where id = #{id}
+    </delete>
+
+    <delete id="deleteSportsAudienceServiceByIds" parameterType="String">
+        delete from sports_audience_service where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/Neuedu-admin/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Neuedu-admin/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Neuedu-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Neuedu-common/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Neuedu-framework/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Neuedu-framework/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Neuedu-generator/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Neuedu-generator/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Neuedu-online/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Neuedu-online/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Neuedu-quartz/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Neuedu-quartz/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Neuedu-sports/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Neuedu-sports/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Neuedu-system/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Neuedu-system/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

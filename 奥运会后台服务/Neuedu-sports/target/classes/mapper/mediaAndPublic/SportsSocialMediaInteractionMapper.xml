@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.sports.mapper.SportsSocialMediaInteractionMapper">
+    
+    <resultMap type="SportsSocialMediaInteraction" id="SportsSocialMediaInteractionResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="socialMediaPlatform"    column="social_media_platform"    />
+        <result property="postContent"    column="post_content"    />
+        <result property="postDate"    column="post_date"    />
+        <result property="engagementCount"    column="engagement_count"    />
+    </resultMap>
+
+    <sql id="selectSportsSocialMediaInteractionVo">
+        select id, create_by, create_time, update_by, update_time, remark, social_media_platform, post_content, post_date, engagement_count from sports_social_media_interaction
+    </sql>
+
+    <select id="selectSportsSocialMediaInteractionList" parameterType="SportsSocialMediaInteraction" resultMap="SportsSocialMediaInteractionResult">
+        <include refid="selectSportsSocialMediaInteractionVo"/>
+        <where>  
+            <if test="socialMediaPlatform != null  and socialMediaPlatform != ''"> and social_media_platform = #{socialMediaPlatform}</if>
+            <if test="postContent != null  and postContent != ''"> and post_content = #{postContent}</if>
+            <if test="postDate != null "> and post_date = #{postDate}</if>
+            <if test="engagementCount != null "> and engagement_count = #{engagementCount}</if>
+        </where>
+    </select>
+    
+    <select id="selectSportsSocialMediaInteractionById" parameterType="Long" resultMap="SportsSocialMediaInteractionResult">
+        <include refid="selectSportsSocialMediaInteractionVo"/>
+        where sports_social_media_interaction.id = #{id}
+    </select>
+        
+    <insert id="insertSportsSocialMediaInteraction" parameterType="SportsSocialMediaInteraction" useGeneratedKeys="true" keyProperty="id">
+        insert into sports_social_media_interaction
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="socialMediaPlatform != null">social_media_platform,</if>
+            <if test="postContent != null">post_content,</if>
+            <if test="postDate != null">post_date,</if>
+            <if test="engagementCount != null">engagement_count,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="socialMediaPlatform != null">#{socialMediaPlatform},</if>
+            <if test="postContent != null">#{postContent},</if>
+            <if test="postDate != null">#{postDate},</if>
+            <if test="engagementCount != null">#{engagementCount},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSportsSocialMediaInteraction" parameterType="SportsSocialMediaInteraction">
+        update sports_social_media_interaction
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="socialMediaPlatform != null">social_media_platform = #{socialMediaPlatform},</if>
+            <if test="postContent != null">post_content = #{postContent},</if>
+            <if test="postDate != null">post_date = #{postDate},</if>
+            <if test="engagementCount != null">engagement_count = #{engagementCount},</if>
+        </trim>
+        where sports_social_media_interaction.id = #{id}
+    </update>
+
+    <delete id="deleteSportsSocialMediaInteractionById" parameterType="Long">
+        delete from sports_social_media_interaction where id = #{id}
+    </delete>
+
+    <delete id="deleteSportsSocialMediaInteractionByIds" parameterType="String">
+        delete from sports_social_media_interaction where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

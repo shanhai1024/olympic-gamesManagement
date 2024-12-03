@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.sports.mapper.SportsAccommodationSchedulingMapper">
+    
+    <resultMap type="SportsAccommodationScheduling" id="SportsAccommodationSchedulingResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="accommodationType"    column="accommodation_type"    />
+        <result property="accommodationDetails"    column="accommodation_details"    />
+        <result property="numberOfRooms"    column="number_of_rooms"    />
+    </resultMap>
+
+    <sql id="selectSportsAccommodationSchedulingVo">
+        select id, create_by, create_time, update_by, update_time, remark, accommodation_type, accommodation_details, number_of_rooms from sports_accommodation_scheduling
+    </sql>
+
+    <select id="selectSportsAccommodationSchedulingList" parameterType="SportsAccommodationScheduling" resultMap="SportsAccommodationSchedulingResult">
+        <include refid="selectSportsAccommodationSchedulingVo"/>
+        <where>  
+            <if test="accommodationType != null  and accommodationType != ''"> and accommodation_type = #{accommodationType}</if>
+            <if test="accommodationDetails != null  and accommodationDetails != ''"> and accommodation_details = #{accommodationDetails}</if>
+            <if test="numberOfRooms != null "> and number_of_rooms = #{numberOfRooms}</if>
+        </where>
+    </select>
+    
+    <select id="selectSportsAccommodationSchedulingById" parameterType="Long" resultMap="SportsAccommodationSchedulingResult">
+        <include refid="selectSportsAccommodationSchedulingVo"/>
+        where sports_accommodation_scheduling.id = #{id}
+    </select>
+        
+    <insert id="insertSportsAccommodationScheduling" parameterType="SportsAccommodationScheduling" useGeneratedKeys="true" keyProperty="id">
+        insert into sports_accommodation_scheduling
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="accommodationType != null">accommodation_type,</if>
+            <if test="accommodationDetails != null">accommodation_details,</if>
+            <if test="numberOfRooms != null">number_of_rooms,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="accommodationType != null">#{accommodationType},</if>
+            <if test="accommodationDetails != null">#{accommodationDetails},</if>
+            <if test="numberOfRooms != null">#{numberOfRooms},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSportsAccommodationScheduling" parameterType="SportsAccommodationScheduling">
+        update sports_accommodation_scheduling
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="accommodationType != null">accommodation_type = #{accommodationType},</if>
+            <if test="accommodationDetails != null">accommodation_details = #{accommodationDetails},</if>
+            <if test="numberOfRooms != null">number_of_rooms = #{numberOfRooms},</if>
+        </trim>
+        where sports_accommodation_scheduling.id = #{id}
+    </update>
+
+    <delete id="deleteSportsAccommodationSchedulingById" parameterType="Long">
+        delete from sports_accommodation_scheduling where id = #{id}
+    </delete>
+
+    <delete id="deleteSportsAccommodationSchedulingByIds" parameterType="String">
+        delete from sports_accommodation_scheduling where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

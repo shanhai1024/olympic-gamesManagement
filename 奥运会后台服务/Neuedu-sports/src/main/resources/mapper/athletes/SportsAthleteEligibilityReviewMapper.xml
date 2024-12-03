@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.sports.mapper.SportsAthleteEligibilityReviewMapper">
+    
+    <resultMap type="SportsAthleteEligibilityReview" id="SportsAthleteEligibilityReviewResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="athleteId"    column="athlete_id"    />
+        <result property="eligibilityCriteria"    column="eligibility_criteria"    />
+        <result property="dopingTestInfo"    column="doping_test_info"    />
+        <result property="eligibilityStatus"    column="eligibility_status"    />
+    </resultMap>
+
+    <sql id="selectSportsAthleteEligibilityReviewVo">
+        select id, create_by, create_time, update_by, update_time, remark, athlete_id, eligibility_criteria, doping_test_info, eligibility_status from sports_athlete_eligibility_review
+    </sql>
+
+    <select id="selectSportsAthleteEligibilityReviewList" parameterType="SportsAthleteEligibilityReview" resultMap="SportsAthleteEligibilityReviewResult">
+        <include refid="selectSportsAthleteEligibilityReviewVo"/>
+        <where>  
+            <if test="athleteId != null "> and athlete_id = #{athleteId}</if>
+            <if test="eligibilityCriteria != null  and eligibilityCriteria != ''"> and eligibility_criteria = #{eligibilityCriteria}</if>
+            <if test="dopingTestInfo != null  and dopingTestInfo != ''"> and doping_test_info = #{dopingTestInfo}</if>
+            <if test="eligibilityStatus != null  and eligibilityStatus != ''"> and eligibility_status = #{eligibilityStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectSportsAthleteEligibilityReviewById" parameterType="Long" resultMap="SportsAthleteEligibilityReviewResult">
+        <include refid="selectSportsAthleteEligibilityReviewVo"/>
+        where sports_athlete_eligibility_review.id = #{id}
+    </select>
+        
+    <insert id="insertSportsAthleteEligibilityReview" parameterType="SportsAthleteEligibilityReview" useGeneratedKeys="true" keyProperty="id">
+        insert into sports_athlete_eligibility_review
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="athleteId != null">athlete_id,</if>
+            <if test="eligibilityCriteria != null">eligibility_criteria,</if>
+            <if test="dopingTestInfo != null">doping_test_info,</if>
+            <if test="eligibilityStatus != null">eligibility_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="athleteId != null">#{athleteId},</if>
+            <if test="eligibilityCriteria != null">#{eligibilityCriteria},</if>
+            <if test="dopingTestInfo != null">#{dopingTestInfo},</if>
+            <if test="eligibilityStatus != null">#{eligibilityStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSportsAthleteEligibilityReview" parameterType="SportsAthleteEligibilityReview">
+        update sports_athlete_eligibility_review
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="athleteId != null">athlete_id = #{athleteId},</if>
+            <if test="eligibilityCriteria != null">eligibility_criteria = #{eligibilityCriteria},</if>
+            <if test="dopingTestInfo != null">doping_test_info = #{dopingTestInfo},</if>
+            <if test="eligibilityStatus != null">eligibility_status = #{eligibilityStatus},</if>
+        </trim>
+        where sports_athlete_eligibility_review.id = #{id}
+    </update>
+
+    <delete id="deleteSportsAthleteEligibilityReviewById" parameterType="Long">
+        delete from sports_athlete_eligibility_review where id = #{id}
+    </delete>
+
+    <delete id="deleteSportsAthleteEligibilityReviewByIds" parameterType="String">
+        delete from sports_athlete_eligibility_review where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

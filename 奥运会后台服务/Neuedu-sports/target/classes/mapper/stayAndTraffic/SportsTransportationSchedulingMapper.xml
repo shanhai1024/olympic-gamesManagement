@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.sports.mapper.SportsTransportationSchedulingMapper">
+    
+    <resultMap type="SportsTransportationScheduling" id="SportsTransportationSchedulingResult">
+        <result property="id"    column="id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="transportationType"    column="transportation_type"    />
+        <result property="scheduleDetails"    column="schedule_details"    />
+        <result property="capacity"    column="capacity"    />
+    </resultMap>
+
+    <sql id="selectSportsTransportationSchedulingVo">
+        select id, create_by, create_time, update_by, update_time, remark, transportation_type, schedule_details, capacity from sports_transportation_scheduling
+    </sql>
+
+    <select id="selectSportsTransportationSchedulingList" parameterType="SportsTransportationScheduling" resultMap="SportsTransportationSchedulingResult">
+        <include refid="selectSportsTransportationSchedulingVo"/>
+        <where>  
+            <if test="transportationType != null  and transportationType != ''"> and transportation_type = #{transportationType}</if>
+            <if test="scheduleDetails != null  and scheduleDetails != ''"> and schedule_details = #{scheduleDetails}</if>
+            <if test="capacity != null "> and capacity = #{capacity}</if>
+        </where>
+    </select>
+    
+    <select id="selectSportsTransportationSchedulingById" parameterType="Long" resultMap="SportsTransportationSchedulingResult">
+        <include refid="selectSportsTransportationSchedulingVo"/>
+        where sports_transportation_scheduling.id = #{id}
+    </select>
+        
+    <insert id="insertSportsTransportationScheduling" parameterType="SportsTransportationScheduling" useGeneratedKeys="true" keyProperty="id">
+        insert into sports_transportation_scheduling
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="transportationType != null">transportation_type,</if>
+            <if test="scheduleDetails != null">schedule_details,</if>
+            <if test="capacity != null">capacity,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="transportationType != null">#{transportationType},</if>
+            <if test="scheduleDetails != null">#{scheduleDetails},</if>
+            <if test="capacity != null">#{capacity},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSportsTransportationScheduling" parameterType="SportsTransportationScheduling">
+        update sports_transportation_scheduling
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="transportationType != null">transportation_type = #{transportationType},</if>
+            <if test="scheduleDetails != null">schedule_details = #{scheduleDetails},</if>
+            <if test="capacity != null">capacity = #{capacity},</if>
+        </trim>
+        where sports_transportation_scheduling.id = #{id}
+    </update>
+
+    <delete id="deleteSportsTransportationSchedulingById" parameterType="Long">
+        delete from sports_transportation_scheduling where id = #{id}
+    </delete>
+
+    <delete id="deleteSportsTransportationSchedulingByIds" parameterType="String">
+        delete from sports_transportation_scheduling where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.sports.mapper.SportsResultRecordMapper">
+    
+    <resultMap type="SportsResultRecord" id="SportsResultRecordResult">
+        <result property="jie"    column="jie"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="matchId"    column="match_id"    />
+        <result property="winnerAthleteId"    column="winner_athlete_id"    />
+        <result property="loserAthleteId"    column="loser_athlete_id"    />
+        <result property="result"    column="result"    />
+    </resultMap>
+
+    <sql id="selectSportsResultRecordVo">
+        select jie, create_by, create_time, update_by, update_time, remark, match_id, winner_athlete_id, loser_athlete_id, result from sports_result_record
+    </sql>
+
+    <select id="selectSportsResultRecordList" parameterType="SportsResultRecord" resultMap="SportsResultRecordResult">
+        <include refid="selectSportsResultRecordVo"/>
+        <where>  
+            <if test="matchId != null "> and match_id = #{matchId}</if>
+            <if test="winnerAthleteId != null "> and winner_athlete_id = #{winnerAthleteId}</if>
+            <if test="loserAthleteId != null  and loserAthleteId != ''"> and loser_athlete_id = #{loserAthleteId}</if>
+            <if test="result != null  and result != ''"> and result = #{result}</if>
+        </where>
+    </select>
+    
+    <select id="selectSportsResultRecordByJie" parameterType="Long" resultMap="SportsResultRecordResult">
+        <include refid="selectSportsResultRecordVo"/>
+        where sports_result_record.jie = #{jie}
+    </select>
+        
+    <insert id="insertSportsResultRecord" parameterType="SportsResultRecord" useGeneratedKeys="true" keyProperty="jie">
+        insert into sports_result_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="matchId != null">match_id,</if>
+            <if test="winnerAthleteId != null">winner_athlete_id,</if>
+            <if test="loserAthleteId != null">loser_athlete_id,</if>
+            <if test="result != null">result,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="matchId != null">#{matchId},</if>
+            <if test="winnerAthleteId != null">#{winnerAthleteId},</if>
+            <if test="loserAthleteId != null">#{loserAthleteId},</if>
+            <if test="result != null">#{result},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSportsResultRecord" parameterType="SportsResultRecord">
+        update sports_result_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="matchId != null">match_id = #{matchId},</if>
+            <if test="winnerAthleteId != null">winner_athlete_id = #{winnerAthleteId},</if>
+            <if test="loserAthleteId != null">loser_athlete_id = #{loserAthleteId},</if>
+            <if test="result != null">result = #{result},</if>
+        </trim>
+        where sports_result_record.jie = #{jie}
+    </update>
+
+    <delete id="deleteSportsResultRecordByJie" parameterType="Long">
+        delete from sports_result_record where jie = #{jie}
+    </delete>
+
+    <delete id="deleteSportsResultRecordByJies" parameterType="String">
+        delete from sports_result_record where jie in 
+        <foreach item="jie" collection="array" open="(" separator="," close=")">
+            #{jie}
+        </foreach>
+    </delete>
+</mapper>
