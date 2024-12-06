@@ -1,0 +1,13 @@
+com/neuedu/generator/service/GenTableColumnServiceImpl.class
+com/neuedu/generator/domain/GenTableColumn.class
+com/neuedu/generator/service/GenTableServiceImpl.class
+com/neuedu/generator/util/VelocityUtils.class
+com/neuedu/generator/config/GenConfig.class
+com/neuedu/generator/controller/GenController.class
+com/neuedu/generator/util/GenUtils.class
+com/neuedu/generator/mapper/GenTableMapper.class
+com/neuedu/generator/service/IGenTableService.class
+com/neuedu/generator/domain/GenTable.class
+com/neuedu/generator/mapper/GenTableColumnMapper.class
+com/neuedu/generator/service/IGenTableColumnService.class
+com/neuedu/generator/util/VelocityInitializer.class
